@@ -1,13 +1,4 @@
 function(sanitize_clang theTarget)
-    if(NOT APPLE AND NOT WIN32) # Only for linux.
-      # TODO : http://stackoverflow.com/a/30176092/1495627
-      # Need to check for the libstdc++ abi.
-      # target_compile_definitions(${TheTarget} PUBLIC
-      #  $<$<CONFIG:Debug>:_GLIBCXX_DEBUG>
-      #  $<$<CONFIG:Debug>:_GLIBCXX_DEBUG_PEDANTIC>
-      #  )
-    endif()
-
     target_compile_options(${theTarget} PUBLIC
       $<$<CONFIG:Debug>:-fsanitize=undefined>
       )
@@ -16,11 +7,6 @@ function(sanitize_clang theTarget)
 endfunction()
 
 function(sanitize_gcc theTarget)
-    target_compile_definitions(${TheTarget} PUBLIC
-      $<$<CONFIG:Debug>:_GLIBCXX_DEBUG>
-      $<$<CONFIG:Debug>:_GLIBCXX_DEBUG_PEDANTIC>
-      )
-
     if(NOT ISCORE_COTIRE) ## Sanitizer won't work with PCHs
       target_compile_options(${theTarget} PUBLIC
         $<$<CONFIG:Debug>:-fsanitize=undefined>
