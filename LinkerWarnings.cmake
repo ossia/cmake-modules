@@ -1,0 +1,5 @@
+function(add_linker_warnings theTarget)
+    if(APPLE)
+        target_link_libraries(${theTarget} "-Wl,-fatal_warnings")
+    endif()
+endfunction()
