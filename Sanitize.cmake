@@ -2,7 +2,7 @@ function(sanitize_clang theTarget)
     target_compile_options(${theTarget} PUBLIC
       $<$<CONFIG:Debug>:-fsanitize=undefined>
       )
-    target_link_libraries(${theTarget}
+    target_link_libraries(${theTarget} PRIVATE
       $<$<CONFIG:Debug>:-lubsan> )
 endfunction()
 
@@ -11,7 +11,7 @@ function(sanitize_gcc theTarget)
       target_compile_options(${theTarget} PUBLIC
         $<$<CONFIG:Debug>:-fsanitize=undefined>
       )
-      target_link_libraries(${theTarget}
+      target_link_libraries(${theTarget} PRIVATE
         $<$<CONFIG:Debug>:-fsanitize=undefined> )
     endif()
 endfunction()
