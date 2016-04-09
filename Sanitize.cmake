@@ -1,18 +1,25 @@
 function(sanitize_clang theTarget)
     target_compile_options(${theTarget} PUBLIC
-      $<$<CONFIG:Debug>:-fsanitize=undefined>
+        $<$<CONFIG:Debug>:-fsanitize=undefined>
+        $<$<CONFIG:Debug>:-fsanitize=address>
       )
     target_link_libraries(${theTarget} PRIVATE
-      $<$<CONFIG:Debug>:-lubsan> )
+      $<$<CONFIG:Debug>:-lubsan>
+      $<$<CONFIG:Debug>:-lasan>
+      )
 endfunction()
 
 function(sanitize_gcc theTarget)
     if(NOT ISCORE_COTIRE) ## Sanitizer won't work with PCHs
       target_compile_options(${theTarget} PUBLIC
         $<$<CONFIG:Debug>:-fsanitize=undefined>
+        $<$<CONFIG:Debug>:-fsanitize=address>
+        $<$<CONFIG:Debug>:-fno-omit-frame-pointer>
       )
       target_link_libraries(${theTarget} PRIVATE
-        $<$<CONFIG:Debug>:-fsanitize=undefined> )
+          $<$<CONFIG:Debug>:-lubsan>
+          $<$<CONFIG:Debug>:-lasan>
+      )
     endif()
 endfunction()
 
