@@ -1,11 +1,12 @@
 function(sanitize_clang theTarget)
     target_compile_options(${theTarget} PUBLIC
         $<$<CONFIG:Debug>:-fsanitize=undefined>
+        $<$<CONFIG:Debug>:-fsanitize=integer>
         $<$<CONFIG:Debug>:-fsanitize=address>
+        $<$<CONFIG:Debug>:-fno-omit-frame-pointer>
       )
-    target_link_libraries(${theTarget} PRIVATE
-      $<$<CONFIG:Debug>:-lubsan>
-      $<$<CONFIG:Debug>:-lasan>
+    target_link_libraries(${theTarget} PUBLIC
+        $<$<CONFIG:Debug>:-fsanitize=address>
       )
 endfunction()
 
@@ -16,7 +17,7 @@ function(sanitize_gcc theTarget)
         $<$<CONFIG:Debug>:-fsanitize=address>
         $<$<CONFIG:Debug>:-fno-omit-frame-pointer>
       )
-      target_link_libraries(${theTarget} PRIVATE
+      target_link_libraries(${theTarget} PUBLIC
           $<$<CONFIG:Debug>:-lubsan>
           $<$<CONFIG:Debug>:-lasan>
       )
