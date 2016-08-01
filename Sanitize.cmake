@@ -28,7 +28,9 @@ function(sanitize_msvc theTarget)
 endfunction()
 
 function(sanitize_build theTarget)
-    if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+    if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "AppleClang")
+        # do nothing
+    elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
         sanitize_clang(${theTarget})
     elseif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "MSVC")
         sanitize_msvc(${theTarget})
