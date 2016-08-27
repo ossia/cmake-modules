@@ -26,10 +26,12 @@ function(sanitize_gcc theTarget)
         $<$<CONFIG:Debug>:-fsanitize=undefined>
         $<$<CONFIG:Debug>:-fsanitize=address>
         $<$<CONFIG:Debug>:-fno-omit-frame-pointer>
+        $<$<CONFIG:Debug>:-fuse-ld=gold>
       )
       target_link_libraries(${theTarget} PUBLIC
           $<$<CONFIG:Debug>:-fsanitize=address>
           $<$<CONFIG:Debug>:-fsanitize=undefined>
+          $<$<CONFIG:Debug>:-fuse-ld=gold>
       )
     endif()
 endfunction()
