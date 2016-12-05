@@ -1,9 +1,13 @@
 function(use_gold theTarget)
-
   if(UNIX AND NOT APPLE)
     if(WL_ZDEFS_SUPPORTED)
       if(GOLD_LINKER_SUPPORTED)
-        target_link_libraries(${theTarget} PRIVATE "-fuse-ld=gold" "-Wl,-z,defs")
+          target_link_libraries(${theTarget} PRIVATE "-fuse-ld=gold" "-Wl,-z,defs")
+
+          ProcessorCount(NUM_CPUS)
+          if(NUM_CPUS GREATER 1)
+              target_link_libraries(${theTarget} PRIVATE "-Wl,--threads" "-Wl,--thread-count,${NUM_CPUS}")
+          endif()
       endif()
     endif()
   endif()
