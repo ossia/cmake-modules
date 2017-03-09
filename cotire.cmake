@@ -2982,6 +2982,14 @@ function (cotire_setup_unity_build_target _languages _configurations _target)
 	# determine unity target sources
 	set (_unityTargetSources "")
 	cotire_collect_unity_target_sources(${_target} "${_languages}" _unityTargetSources)
+    
+	if("${CMAKE_VERSION}" VERSION_LESS 3.8.0)
+		set(_targetAutogenFile "${_target}_automoc.cpp")
+		set(_targetAutogenTarget "${_target}_automoc")
+	else()
+		set(_targetAutogenFile "${_target}_autogen/moc_compilation.cpp")
+		set(_targetAutogenTarget "${_target}_autogen")
+	endif()
 	# handle automatic Qt processing
 	get_target_property(_targetAutoMoc ${_target} AUTOMOC)
 	get_target_property(_targetAutoUic ${_target} AUTOUIC)
@@ -2989,9 +2997,10 @@ function (cotire_setup_unity_build_target _languages _configurations _target)
 	if (_targetAutoMoc OR _targetAutoUic OR _targetAutoRcc)
 		# if the original target sources are subject to CMake's automatic Qt processing,
 		# also include implicitly generated <targetname>_automoc.cpp file
-		list (APPEND _unityTargetSources "${_target}_automoc.cpp")
-		set_property (SOURCE "${_target}_automoc.cpp" PROPERTY GENERATED TRUE)
+		list (APPEND _unityTargetSources "${_targetAutogenFile}")
+		set_property (SOURCE "${_targetAutogenFile}" PROPERTY GENERATED TRUE)
 	endif()
+    
 	# prevent AUTOMOC, AUTOUIC and AUTORCC properties from being set when the unity target is created
 	set (CMAKE_AUTOMOC OFF)
 	set (CMAKE_AUTOUIC OFF)
@@ -3007,13 +3016,13 @@ function (cotire_setup_unity_build_target _languages _configurations _target)
 	endif()
 	if ("${CMAKE_GENERATOR}" MATCHES "Visual Studio")
 		# depend on original target's automoc target, if it exists
-		if (TARGET ${_target}_automoc)
-			add_dependencies(${_unityTargetName} ${_target}_automoc)
+		if (TARGET "${_targetAutogenTarget}")
+			add_dependencies(${_unityTargetName} "${_targetAutogenTarget}")
 		endif()
 	else()
 		if (_targetAutoMoc OR _targetAutoUic OR _targetAutoRcc)
 			# depend on the original target's implicity generated <targetname>_automoc target
-			add_dependencies(${_unityTargetName} ${_target}_automoc)
+			add_dependencies(${_unityTargetName} "${_targetAutogenTarget}")
 		endif()
 	endif()
 	# copy output location properties
