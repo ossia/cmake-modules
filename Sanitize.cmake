@@ -21,7 +21,7 @@ target_link_libraries(${theTarget} PUBLIC
 endfunction()
 
 function(sanitize_gcc theTarget)
-    if(NOT ISCORE_COTIRE) ## Sanitizer won't work with PCHs
+    if(NOT SCORE_COTIRE) ## Sanitizer won't work with PCHs
       target_compile_options(${theTarget} PUBLIC
         $<$<CONFIG:Debug>:-fsanitize=undefined>
         $<$<CONFIG:Debug>:-fsanitize=address>
