@@ -6,13 +6,15 @@ endfunction()
 
 function(add_linker_warnings_external theTarget)
   if(OSSIA_CI)
-    get_target_property(TEMP ${theTarget} LINK_FLAGS)
-    if(TEMP STREQUAL "TEMP-NOTFOUND")
-      SET(TEMP "") # set to empty string
+    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+      get_target_property(TEMP ${theTarget} LINK_FLAGS)
+      if(TEMP STREQUAL "TEMP-NOTFOUND")
+        SET(TEMP "") # set to empty string
+      endif()
+      set_target_properties(${theTarget}
+        PROPERTIES LINK_FLAGS
+        "${TEMP} -Wl,--unresolved-symbols=ignore-in-object-files")
     endif()
-    set_target_properties(${theTarget}
-      PROPERTIES LINK_FLAGS
-      "${TEMP} -Wl,--unresolved-symbols=ignore-in-object-files")
   else()
     if(APPLE)
       target_link_libraries(${theTarget} PRIVATE -Wl,-undefined,dynamic_lookup)
