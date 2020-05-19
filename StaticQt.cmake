@@ -22,7 +22,7 @@ function(enable_minimal_qt_plugins theTarget)
   endif()
 
   get_target_property(QtType Qt5::Core TYPE)
-  if(NOT ("${QtType}" STREQUAL "STATIC"))
+  if(NOT ("${QtType}" STREQUAL "STATIC_LIBRARY"))
     return()
   endif()
 
