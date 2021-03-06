@@ -39,6 +39,8 @@ function(enable_minimal_qt_plugins theTarget)
   link_if_exists(${QT_PREFIX}::QCocoaIntegrationPlugin)
   link_if_exists(${QT_PREFIX}::QEglFSIntegrationPlugin)
   link_if_exists(${QT_PREFIX}::QEglFSX11IntegrationPlugin)
+  link_if_exists(${QT_PREFIX}::QEglFSKmsEglDeviceIntegrationPlugin)
+  link_if_exists(${QT_PREFIX}::QEglFSKmsGbmIntegrationPlugin)
   link_if_exists(${QT_PREFIX}::QWasmIntegrationPlugin)
 
 
