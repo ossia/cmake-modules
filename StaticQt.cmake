@@ -49,5 +49,9 @@ function(enable_minimal_qt_plugins theTarget)
   link_if_exists(${QT_PREFIX}::QEglFSKmsGbmIntegrationPlugin)
   link_if_exists(${QT_PREFIX}::QWasmIntegrationPlugin)
 
-
+  link_if_exists(${QT_PREFIX}::QJpegPlugin)
+  link_if_exists(${QT_PREFIX}::QTiffPlugin)
+  link_if_exists(${QT_PREFIX}::QGifPlugin)
+  link_if_exists(${QT_PREFIX}::QTgaPlugin)
+  link_if_exists(${QT_PREFIX}::QWebpPlugin)
 endfunction()
