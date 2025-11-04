@@ -1,14 +1,16 @@
 # Ported from KFR
 function (link_whole_archive TARGET TYPE LIBRARY)
   if(NOT (TARGET "${LIBRARY}"))
-      message(FATAL_ERROR "Trying to link missing target ${LIBRARY}")
+    message(FATAL_ERROR "Trying to link missing target ${LIBRARY}")
   endif()
   get_target_property(libtype ${LIBRARY} TYPE)
   if("${libtype}" MATCHES "INTERFACE.*")
     target_link_libraries(${TARGET} ${TYPE} "$<BUILD_INTERFACE:${LIBRARY}>")
     return()
   endif()
-
+  
+  message(STATUS "link_whole_archive: ${TARGET} <- ${LIBRARY}")
+  
   if(CMAKE_LINK_LIBRARY_USING_WHOLE_ARCHIVE_SUPPORTED)
     target_link_libraries(${TARGET} ${TYPE} "$<BUILD_INTERFACE:$<LINK_LIBRARY:WHOLE_ARCHIVE,${LIBRARY}>>")
   else()
