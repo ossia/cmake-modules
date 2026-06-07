@@ -8,12 +8,13 @@ function (link_whole_archive TARGET TYPE LIBRARY)
     target_link_libraries(${TARGET} ${TYPE} "$<BUILD_INTERFACE:${LIBRARY}>")
     return()
   endif()
-  
+
   message(STATUS "link_whole_archive: ${TARGET} <- ${LIBRARY}")
-  
+
   if(CMAKE_LINK_LIBRARY_USING_WHOLE_ARCHIVE_SUPPORTED)
     target_link_libraries(${TARGET} ${TYPE} "$<BUILD_INTERFACE:$<LINK_LIBRARY:WHOLE_ARCHIVE,${LIBRARY}>>")
   else()
+    target_link_libraries(${TARGET} ${TYPE} "$<BUILD_INTERFACE:${LIBRARY}>")
     if (APPLE)
       target_link_options(${TARGET} ${TYPE} "$<BUILD_INTERFACE:LINKER:-force_load,$<TARGET_FILE:${LIBRARY}>>")
     elseif (MSVC)
